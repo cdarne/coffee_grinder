@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <title>CoffeeScript grinder</title>
+    <link href="lib/vendor/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="lib/main.css" type="text/css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="error" style="display: none;"></div>
+    <textarea id="repl_source"></textarea>
+    <pre class="prettyprint" id="repl_results"></pre>
+    <script type="text/coffeescript">
+      # Set up the compilation function, to run when you stop typing.
+      compileSource = ->
+        source = $('#repl_source').val()
+        window.compiledJS = ''
+        try
+          window.compiledJS = CoffeeScript.compile source, bare: on
+          el = $('#repl_results')[0]
+          if el.innerText
+            el.innerText = window.compiledJS
+          else
+            $(el).text window.compiledJS
+          $('#error').hide()
+          prettyPrint()
+        catch error
+          $('#error').text(error.message).show()
+
+      # Listen for keypresses and recompile.
+      $('#repl_source').keyup -> compileSource()
+
+      # Eval the compiled js.
+      evalJS = ->
+        try
+          eval window.compiledJS
+        catch error then alert error
+
+      $('.minibutton.run').click evalJS
+
+      $(document.body)
+      .keydown (e) ->
+        evalJS() if e.which == 13 and (e.metaKey or e.ctrlKey) and $('.minibutton.run:visible').length
+    </script>
+    <script type="text/javascript" src="lib/vendor/jquery-1.6.1.min.js"></script>
+    <script type="text/javascript" src="lib/vendor/coffee-script.js"></script>
+    <script type="text/javascript" src="lib/vendor/prettify/prettify.js"></script>
+  </body>
+</html>
