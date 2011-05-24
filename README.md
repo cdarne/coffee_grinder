@@ -2,6 +2,7 @@ Coffee grinder
 ==============
 
 A simple CoffeesSript browser REPL taken from official Try CoffeeScript.
+You can try it on http://cdarne.github.com/coffee_grinder.
 
 Credits
 -------
